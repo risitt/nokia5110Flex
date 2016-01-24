@@ -34,7 +34,7 @@ Next, you must create an instance of the nokia5110Flex class. You can create mul
 
 This is also how you set the configuration options that tell nokia5110Flex what pins you've used and whether to use hardware or software SPI.
 
-If you use hardware SPI, it is important that you connect the LCD's MOSI and SCLK pins to the matching pins on your microcontroller. On an Arduino UNO, Duemilanove, or Pro, the MOSI pin is 11 and the SCLK pin is 13. Additionally, two of the digital out pins (SS and MISO) on your microcontroller are reserved for receiving data. These two pins should *not* be connected to your LCD. On an Arduino UNO, Duemilanove, or Pro, the SS pin is 10 and the MISO pin is 13.
+If you use hardware SPI, it is important that you connect the LCD's MOSI and SCLK pins to the matching pins on your microcontroller. On an Arduino UNO, Duemilanove, or Pro, the MOSI pin is 11 and the SCLK pin is 13. Additionally, two of the digital out pins (SS and MISO) on your microcontroller are reserved for receiving data. These two pins should *not* be connected to your LCD. On an Arduino UNO, Duemilanove, or Pro, the SS pin is 10 and the MISO pin is 12.
 
 ### Example:
 ```C++
@@ -66,7 +66,7 @@ lcd.cls();
 ## <a name="write">void write(...) and void write_P(...)</a>
 Both of these methods write a string to the LCD starting at the current cursor position and advance the cursor to the next available position. The write() method will accept either a String object or c-style string as a parameter, but the write_P() method will only work with c-style strings.
 
-You can use the \n escape sequence within a string to go to the next line. You can also print special characters using the \x__ escape sequence format, where the byte that follows \x refers to the numeric index of the desired glyph (see the charset.png file or the glyphs array in nokia5110Flex.cpp). For example, \xB8 is a copyright symbol.
+You can use the \n escape sequence within a string to go to the next line. You can also print special characters using the \x__ escape sequence format, where the byte that follows \x refers to the numeric index of the desired glyph (see the charset.png file or the glyphs array in nokia5110Glyphs.h). For example, \xB8 is a copyright symbol.
 
 For strings stored in PROGMEM, you must use write_P. Otherwise, use write().
 
@@ -151,7 +151,7 @@ lcd.enableBacklight(); // turns the backlight on
 ```
 
 ## <a name="enabledisable">void enable(void) and void disable(void)</a>
-These two methods allow you to the enable or disable the LCD's serial interface. You should not need to use them unless you are chaining multiple devices over the same SPI lines, in which case you would disable all but one device at a time. The enable() method is automatically called by most other functions, so it can usually be omitted.
+These two methods allow you to the enable or disable the LCD's serial interface. You should not need to use them unless you are chaining multiple devices over the same SPI lines, in which case you would usually disable all but one device at a time. The enable() method is automatically called by most other methods, so it is rarely used.
 
 ### Example:
 ```C++
@@ -177,7 +177,7 @@ Inside the library src folder you will find a nokia5110Glyphs.h file. This file 
 
 1. Place a copy of this file in the same folder as your sketch.
 2. Change the file name so that it differs from the original, eg customGlyphs.h
-3. Instead of #include <nokia5110Glyphs.h>, use #include "customGlyphs.h" where customGlyphs.h matches the file name of your custom glyphs file. **Note the double quotes!**
+3. Instead of #include &lt;nokia5110Glyphs.h&gt;, use #include "customGlyphs.h" where customGlyphs.h matches the file name of your custom glyphs file. **Note the double quotes!**
 4. Modify the custom glyphs file in your sketch folder as desired.
 
 To make adding or modifying glyphs easier, use the charmaker.xlsx spreadsheet that is included with this library. It will generate the corresponding array of bytes for any 6x8 character.
