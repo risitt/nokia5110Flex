@@ -34,13 +34,16 @@ Next, you must create an instance of the nokia5110Flex class. You can create mul
 
 This is also how you set the configuration options that tell nokia5110Flex what pins you've used and whether to use hardware or software SPI.
 
-If you use hardware SPI, it is important that you connect the LCD's MOSI and SCLK pins to the matching pins on your microcontroller. On an Arduino UNO, Duemilanove, or Pro, the MOSI pin is 11 and the SCLK pin is 13. Additionally, two of the digital out pins (SS and MISO) on your microcontroller are reserved for receiving data. These two pins should *not* be connected to your LCD. On an Arduino UNO, Duemilanove, or Pro, the SS pin is 10 and the MISO pin is 12.
+To use hardware SPI, you only pass four pin parameters for the SCE, RESET, D/C, and LED pins. If you pass six pin parameters, adding pins for MOSI and SCLK, then software SPI will be used.
+
+If you use hardware SPI, it is important that you connect the LCD's MOSI and SCLK pins to specific pins on your microcontroller. On an Arduino UNO, Duemilanove, or Pro, the MOSI pin is 11 and the SCLK pin is 13. Additionally, two of the digital out pins (SS and MISO) on your microcontroller are reserved for receiving data. These two pins should *not* be connected to your LCD. On an Arduino UNO, Duemilanove, or Pro, the SS pin is 10 and the MISO pin is 12.
 
 ### Example:
 ```C++
-nokia5110Flex lcd(byte pinSCE, byte pinRESET, byte pinDC, byte pinMOSI, byte pinSCLK, byte pinLED, bool hardwareSPI = true); // general syntax
-nokia5110Flex lcd(9, 8, 7, 11, 13, 6); // use hardware SPI on an Arduino UNO, Duemilanove or Pro
-nokia5110Flex lcd(13, 12, 11, 10, 9, 8, false); // use software SPI
+nokia5110Flex lcd(byte pinSCE, byte pinRESET, byte pinDC, byte pinLED); // syntax for hardware SPI
+nokia5110Flex lcd(byte pinSCE, byte pinRESET, byte pinDC, byte pinLED, byte pinMOSI, byte pinSCLK); // syntax for software SPI
+nokia5110Flex lcd(9, 8, 7, 6); // use hardware SPI
+nokia5110Flex lcd(13, 12, 11, 10, 9, 8); // use software SPI
 ```
 
 ## <a name="begin">void begin(void)</a>
