@@ -12,13 +12,13 @@
   * Connect the Vcc pin to 3.3V.
   * All of the LCD's data pins have a 3.3V logic level. If using a 5V microcontroller, use voltage dropping resistors, level shifters, or voltage dividers for ALL lines.
   * For hardware SPI:
-	* Connect the SCLK pin of the LCD to the SCK pin of the microcontroller (on Arduino boards, this is usually pin 13, 52, or ICSP-3).
-	* Connect the DN/MOSI pin of the LCD to the MOSI pin of the microcontroller (on Arduino boards, this is usually pin 11, 51, or ICSP-4).
-	* Avoid using the micocontroller MISO pin except as intended with the SPI protocol (on Arduino boards, this is usually pin 12, 50, or ICSP-1).
-	* Avoid using the microcontroller slave select (SS) pin except as intended with the SPI protocol (on Arduino boards, this is usually pin 10 or 53).
-	* The other digital pins on the LCD (D/C, RST, and SCE) need their own exclusive digital output pins on your microcontroller.
+    * Connect the SCLK pin of the LCD to the SCK pin of the microcontroller (on Arduino boards, this is usually pin 13, 52, or ICSP-3).
+    * Connect the DN/MOSI pin of the LCD to the MOSI pin of the microcontroller (on Arduino boards, this is usually pin 11, 51, or ICSP-4).
+    * Avoid using the micocontroller MISO pin except as intended with the SPI protocol (on Arduino boards, this is usually pin 12, 50, or ICSP-1).
+    * Avoid using the microcontroller slave select (SS) pin except as intended with the SPI protocol (on Arduino boards, this is usually pin 10 or 53).
+    * The other digital pins on the LCD (D/C, RST, and SCE) need their own exclusive digital output pins on your microcontroller.
   * For software SPI (be sure to set hardwareSPI to false when you instantiate nokia5110Flex):
-	* Connect each of the LCD's SCLK, DN/MOSI, D/C, RST, and SCE pins to an available digital output pin on your microcontroller.
+    * Connect each of the LCD's SCLK, DN/MOSI, D/C, RST, and SCE pins to an available digital output pin on your microcontroller.
 
   Important:
   * run begin() as early as possible in your program's execution
@@ -28,7 +28,7 @@
 
   * If you experience problems:
     * Double check wiring and software.
-	* Unclip LCD from board and clean contacts on both the board and the LCD, they are sometimes dirty.
+    * Unclip LCD from board and clean contacts on both the board and the LCD, they are sometimes dirty.
     * If the display is all dark, your contrast setting is probably too high.
     * If you see nothing on the display, your contrast setting may be too low.
 
@@ -87,11 +87,11 @@ public:
         digitalWrite(pinLED, LOW);
     }
     bool invert;
-private:
     static const byte xPixels = 84;
     static const byte yPixels = 48;
     static const byte xChars = 14;
     static const byte yChars = 6;
+private:
     static const byte xAddrs = 84;
     static const byte yAddrs = 6;
     static const byte charWidth = xPixels / xChars;
