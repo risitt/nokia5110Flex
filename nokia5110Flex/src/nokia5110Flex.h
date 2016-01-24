@@ -60,7 +60,6 @@ public:
     void write_P(const char *text);
 	void write_P(const char* const* text);
 	bool writeChar(byte textByte);
-	bool writeCustomGlyph(const byte glyph[]);
 	inline bool newLine(void) { return moveCursor(0,++yChar); }
     void cls(void);
 	void enableBacklight(void) { digitalWrite(pinLED, HIGH); } 

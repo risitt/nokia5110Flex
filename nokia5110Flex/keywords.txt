@@ -16,17 +16,18 @@ begin	KEYWORD2
 enable	KEYWORD2
 disable	KEYWORD2
 setContrast	KEYWORD2
-gotoChar	KEYWORD2
+getContrast	KEYWORD2
+moveCursor	KEYWORD2
+getCursorX	KEYWORD2
+getCursorY	KEYWORD2
 write	KEYWORD2
 writeNum	KEYWORD2
 write_P	KEYWORD2
 writeChar	KEYWORD2
 newLine	KEYWORD2
 cls	KEYWORD2
-toggleBacklight	KEYWORD2
-yChar	KEYWORD2
-xChar	KEYWORD2
-contrast	KEYWORD2
+enableBacklight	KEYWORD2
+disableBacklight	KEYWORD2
 invert	KEYWORD2
 
 #######################################
