@@ -15,19 +15,12 @@ This software is licensed under the GPL v3
 // Arduino pinout for hardware SPI
 // Avoid assinging pins 12 and 10 on UNO, Duemilanove, Pro when using hardware SPI
 // Consult Arduino SPI reference for wiring on other boards
-// const byte pinLCDSCE = 9; // you can change this 
-// const byte pinLCDRST = 8; // you can change this
-// const byte pinLCDDC = 7; // you can change this
-// const byte pinLCDMOSI = 11; // must use pin 11 on UNO, Duemilanove, Pro
-// const byte pinLCDSCLK = 13; // must use pin 13 on UNO, Duemilanove, Pro
-// const byte pinLCDLED = 6; // you can change this
-
-const uint8_t pinLCDSCE = A1;
-const uint8_t pinLCDRST = A2;
-const uint8_t pinLCDDC = A3;
-const uint8_t pinLCDMOSI = 11;
-const uint8_t pinLCDSCLK = 13;
-const uint8_t pinLCDLED = A0;
+const byte pinLCDSCE = 9; // you can change this 
+const byte pinLCDRST = 8; // you can change this
+const byte pinLCDDC = 7; // you can change this
+const byte pinLCDMOSI = 11; // must use pin 11 on UNO, Duemilanove, Pro
+const byte pinLCDSCLK = 13; // must use pin 13 on UNO, Duemilanove, Pro
+const byte pinLCDLED = 6; // you can change this
 
 // instantiate the nokia5110Flex class for hardware SPI
 nokia5110Flex lcd(pinLCDSCE, pinLCDRST, pinLCDDC, pinLCDMOSI, pinLCDSCLK, pinLCDLED);
