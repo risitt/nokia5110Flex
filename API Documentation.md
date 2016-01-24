@@ -9,7 +9,7 @@ For an example that implements most of the API methods below, please see the "lc
 	* [cls()](#cls)
 	* [write() and write_P()](#write)
 	* [writeNum()](#writenum)
-	* [writeChar()](#writeChar)
+	* [writeChar()](#writechar)
 	* [newLine()](#newline)
 	* [invert](#invert)
 	* [moveCursor()](#movecursor)
@@ -84,7 +84,7 @@ Writes a number (byte, int, word, long, float, etc) to the LCD starting at the c
 lcd.writeNum(100);
 ```
 
-## <a name="writenum">bool writeChar(byte textByte)</a>
+## <a name="writechar">bool writeChar(byte textByte)</a>
 This method writes a single character to the LCD starting at the current cursor position and advances the cursor. If you need to write output to the screen character by character, using this method is faster than passing single characters to the write() method. This method can accept either character literals (use single quotes) or a byte that specifies the numeric index of a glyph.
 
 Returns true as long as the cursor is at a valid position.
@@ -105,7 +105,7 @@ This functions returns true as long as the specified coordinates are valid.
 bool validCoords = lcd.moveCursor(3,5); // move the cursor to the 4th column of the 6th row
 ```
 
-## <a name="movecursor">byte getCursorX(void) and byte getCursorY(void)</a>
+## <a name="getcursor">byte getCursorX(void) and byte getCursorY(void)</a>
 These two methods get the current cursor x and y position, respectively.
 
 ### Example:
