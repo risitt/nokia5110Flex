@@ -26,8 +26,8 @@ First, you need to #include the library and glyphs file in your sketch:
 
 ### Example:
 ```C++
-\#include <nokia5110Flex.h>
-\#include <nokia5110Glyphs.h> // you can use a different file in your sketch folder that specifies custom glyphs
+#include <nokia5110Flex.h>
+#include <nokia5110Glyphs.h> // you can use a different file in your sketch folder that specifies custom glyphs
 ```
 
 Next, you must create an instance of the nokia5110Flex class. You can create multiple instances to drive multiple screens. This is typically done in the global scope (near the top of your sketch, outside of the loop() or setup() routines).
@@ -139,7 +139,7 @@ A property that you can set to true or false. If set to true, all subsequent tex
 lcd.invert = true; // make text inverted
 lcd.write("This text is\ninverted");
 lcd.invert = false; // make text normal again
-lcd.write("\nThis text is/nnot inverted");
+lcd.write("\nThis text is\nnot inverted");
 ```
 
 ## <a name="backlight">void enableBacklight(void) and void disableBacklight(void)</a>
