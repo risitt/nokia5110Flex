@@ -21,6 +21,7 @@ GNU Lesser General Public License (LGPL) V2.1
 3. Copy or move the folder "nokia5110Flex" to your Ardunio library folder
 	* On a Windows PC, this is likely to be C:\Program Files (x86)\Arduino\libraries
 	* On Linux, this is likely to be /home/<username>/Sketchbook/libraries or /home/<username>/Arduino/libraries
-5. Restart the Arduino IDE if it was running
-6. Include the library in your sketch: **#include &lt;nokia5110Flex.h&gt;**
+4. Restart the Arduino IDE if it was running
+5. Include the library in your sketch: **#include &lt;nokia5110Flex.h&gt;**
+6. Include the default character set in your sketch: **#include &lt;nokia5110Glyphs.h&gt;**
 7. Read the API Documentation, or see the example sketches for information on how to use the library
