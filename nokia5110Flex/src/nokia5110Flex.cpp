@@ -17,10 +17,10 @@ nokia5110Flex::~nokia5110Flex() { }
 void nokia5110Flex::begin(void)
 {
     // set necessary pins as ouput
-    pinMode(this->pinRESET, OUTPUT);
-    pinMode(this->pinSCE, OUTPUT);
-    pinMode(this->pinLED, OUTPUT);
-    pinMode(this->pinDC, OUTPUT);
+    pinMode(pinRESET, OUTPUT);
+    pinMode(pinSCE, OUTPUT);
+    pinMode(pinLED, OUTPUT);
+    pinMode(pinDC, OUTPUT);
 
     if (hardwareSPI)
     {
@@ -39,17 +39,18 @@ void nokia5110Flex::begin(void)
     }
 
     // reset the LCD - this must be done early on, reset occurs on a LOW pulse
-    digitalWrite(this->pinRESET, LOW);
-    digitalWrite(this->pinRESET, HIGH);
+    digitalWrite(pinRESET, LOW);
+    digitalWrite(pinRESET, HIGH);
 
     // start with the LED backlight off
-    digitalWrite(this->pinLED, LOW);
+    digitalWrite(pinLED, LOW);
+    backlight = false;
 
     // initialize display
     enable();
     setCmdMode(true);
     send(extended); // sends byte 00100001 (powered up, horizontal addressing, extended instruction set)
-    send(extended_Vop | this->contrast); // sets contrast (V_OP)
+    send(extended_Vop | contrast); // sets contrast (V_OP)
     send(extended_bias); // sends byte 00010100 (sets bias value)
     send(extended_temp); // sends byte 00000100 (selects temperature coefficient 0)
     send(basic); // sends byte 00100000 (powered up, horizontal addressing, basic instruction set)
@@ -76,21 +77,21 @@ void nokia5110Flex::enable(void)
     // Samples on the rising/positive edge of clock pulses (Clock Phase/CPHA = 0)
     // Use SPI_MODE0
     if (hardwareSPI) SPI.beginTransaction(SPISettings(SPEED_4MHZ, MSBFIRST, SPI_MODE0));
-    digitalWrite(this->pinSCE, LOW); // enable serial interface
+    digitalWrite(pinSCE, LOW); // enable serial interface
     enabled = true;
 }
 
 void nokia5110Flex::disable(void)
 {
-    digitalWrite(this->pinSCE, HIGH); // disable serial interface
+    digitalWrite(pinSCE, HIGH); // disable serial interface
     if (hardwareSPI) SPI.endTransaction();
     enabled = false;
 }
 
-byte nokia5110Flex::setContrast(byte contrast)
+byte nokia5110Flex::setContrast(byte newContrast)
 {
-    contrast ^= extended_Vop;
-    this->contrast = contrast;
+    newContrast &= ~extended_Vop;
+    contrast = newContrast;
     setCmdMode(true);
     send(extended); // sends byte 00100001 (powered up, horizontal addressing, extended instruction set)
     send(extended_Vop | contrast); // sets contrast (V_OP)
@@ -127,7 +128,7 @@ bool nokia5110Flex::writeChar(byte textByte)
 
     if ((textByte != newLineByte) && validPos)
     {
-        for (int i = 0; i < (this->charWidth); i++)
+        for (int i = 0; i < (charWidth); i++)
         {
             byte glyphByte = pgm_read_byte(&(glyphs[textByte-0x01][i]));
             if (invert) glyphByte = ~glyphByte;

@@ -49,7 +49,7 @@ public:
     void begin(void);
     void enable(void);
     void disable(void);
-    byte setContrast(byte contrast);
+    byte setContrast(byte newContrast);
     byte getContrast(void)
     {
         return contrast;
@@ -63,15 +63,47 @@ public:
     {
         return yChar;
     }
+    void padToNextLine(byte textByte)
+    {
+        uint8_t padLength = xChars - xChar;
+        for (uint8_t i = 0; i < padLength; i++)
+            writeChar(textByte);
+    }
     void write(String text);
     void write(const char *text);
+    void writeLine(String text)
+    {
+        write(text);
+        padToNextLine(0x20);
+    }
+    void writeLine(const char *text)
+    {
+        write(text);
+        padToNextLine(0x20);
+    }
     template<typename T>
     inline void writeNum(T number)
     {
         write(String(number));
     }
+    template<typename T>
+    inline void writeNumLine(T number)
+    {
+        write(String(number));
+        padToNextLine(0x20);
+    }
     void write_P(const char *text);
     void write_P(const char* const* text);
+    void writeLine_P(const char *text)
+    {
+        write_P(text);
+        padToNextLine(0x20);
+    }
+    void writeLine_P(const char* const* text)
+    {
+        write_P(text);
+        padToNextLine(0x20);
+    }
     bool writeChar(byte textByte);
     inline bool newLine(void)
     {
@@ -81,10 +113,17 @@ public:
     void enableBacklight(void)
     {
         digitalWrite(pinLED, HIGH);
+        backlight = true;
     }
     void disableBacklight(void)
     {
         digitalWrite(pinLED, LOW);
+        backlight = false;
+    }
+    void toggleBacklight(void)
+    {
+        digitalWrite(pinLED, (backlight ? LOW : HIGH));
+        backlight = !backlight;
     }
     bool invert;
     static const byte xPixels = 84;
@@ -118,12 +157,13 @@ private:
     const byte pinLED;
     const bool hardwareSPI;
     bool enabled;
+    bool backlight;
     byte contrast;
     byte yChar;
     byte xChar;
     inline void setCmdMode(bool isCommand)
     {
-        digitalWrite(this->pinDC, (isCommand ? LOW : HIGH));
+        digitalWrite(pinDC, (isCommand ? LOW : HIGH));
     }
     void send(byte dataOrCmd);
 };
