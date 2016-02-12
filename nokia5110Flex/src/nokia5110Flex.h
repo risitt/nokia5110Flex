@@ -146,7 +146,7 @@ private:
     static const byte extended_Vop = 0x80;
     static const byte extended_bias = 0x14; // sets bias value
     static const byte extended_temp = 0x04; // temperature coefficient 0
-    static const byte SPEED_4MHZ = 4000000UL; // 4 Mhz
+    static const uint32_t SPEED_4MHZ = 4000000UL; // 4 Mhz
     static const byte default_contrast = 0x3F;
     const static byte glyphs[][charWidth] PROGMEM;
     const byte pinSCE;
