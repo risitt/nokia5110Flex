@@ -158,7 +158,8 @@ void nokia5110Flex::write_P(const char* const* address)
 void nokia5110Flex::write(String text)
 {
     byte textByte;
-    for (int i=0; i < text.length(); i++)
+    byte strLength = text.length();
+    for (byte i=0; i < strLength; i++)
     {
         textByte = text[i];
         nokia5110Flex::writeChar(textByte);
