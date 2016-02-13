@@ -14,7 +14,7 @@
   Each character is 6x8 pixels
 */
 
-const byte nokia5110Flex::glyphs[][charWidth] PROGMEM =
+const byte nokia5110Flex::GLYPHS[][CHARWIDTH] PROGMEM =
 {
     {0x00, 0x7F, 0x41, 0x5D, 0x5D, 0x41} // 01 battery indicator / progress bar, left segment, with mark
     ,{0x5D, 0x5D, 0x41, 0x5D, 0x5D, 0x41} // 02 battery indicator / progress bar, middle segment, with two marks

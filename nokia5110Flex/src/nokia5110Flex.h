@@ -43,29 +43,20 @@
 class nokia5110Flex
 {
 public:
-    nokia5110Flex(byte pinSCE, byte pinRESET, byte pinDC, byte pinLED, byte pinMOSI, byte pinSCLK);
-    nokia5110Flex(byte pinSCE, byte pinRESET, byte pinDC, byte pinLED);
+    nokia5110Flex(uint8_t pinSCE, uint8_t pinRESET, uint8_t pinDC, uint8_t pinLED, uint8_t pinMOSI, uint8_t pinSCLK);
+    nokia5110Flex(uint8_t pinSCE, uint8_t pinRESET, uint8_t pinDC, uint8_t pinLED);
     ~nokia5110Flex(void);
     void begin(void);
     void enable(void);
     void disable(void);
-    byte setContrast(byte newContrast);
-    byte getContrast(void)
+    uint8_t setContrast(uint8_t newContrast);
+    uint8_t getContrast(void) { return contrast; }
+    bool moveCursor(uint8_t x, uint8_t y);
+    uint8_t getCursorX(void) { return xChar; }
+    uint8_t getCursorY(void) { return yChar; }
+    void padToNextLine(uint8_t textByte)
     {
-        return contrast;
-    }
-    bool moveCursor(byte x, byte y);
-    byte getCursorX(void)
-    {
-        return xChar;
-    }
-    byte getCursorY(void)
-    {
-        return yChar;
-    }
-    void padToNextLine(byte textByte)
-    {
-        uint8_t padLength = xChars - xChar;
+        uint8_t padLength = XCHARS - xChar;
         for (uint8_t i = 0; i < padLength; i++)
             writeChar(textByte);
     }
@@ -96,62 +87,49 @@ public:
     bool writeChar(uint8_t textByte);
     inline bool newLine(void) { return moveCursor(0,++yChar); }
     void cls(void);
-    void enableBacklight(void)
-    {
-        digitalWrite(pinLED, HIGH);
-        backlight = true;
-    }
-    void disableBacklight(void)
-    {
-        digitalWrite(pinLED, LOW);
-        backlight = false;
-    }
-    void toggleBacklight(void)
-    {
-        digitalWrite(pinLED, (backlight ? LOW : HIGH));
-        backlight = !backlight;
-    }
+    void enableBacklight(void) { digitalWrite(PINLED, HIGH); backlight = true; }
+    void disableBacklight(void) { digitalWrite(PINLED, LOW); backlight = false; }
+    void toggleBacklight(void) { digitalWrite(PINLED, (backlight ? LOW : HIGH)); backlight = !backlight; }
     bool invert;
-    static const byte xPixels = 84;
-    static const byte yPixels = 48;
-    static const byte xChars = 14;
-    static const byte yChars = 6;
-private:
-    static const byte xAddrs = 84;
-    static const byte yAddrs = 6;
-    static const byte charWidth = xPixels / xChars;
-    static const byte newLineByte = 0x0A;
-    static const byte basic = 0x20;
-    static const byte basic_dispBlank = 0x08;
-    static const byte basic_dispNorm = 0x0C;
-    static const byte basic_dispAllOn = 0x09;
-    static const byte basic_dispInverse = 0x0D;
-    static const byte basic_setX = 0x80;
-    static const byte basic_setY = 0x40;
-    static const byte extended = 0x21;
-    static const byte extended_Vop = 0x80;
-    static const byte extended_bias = 0x14; // sets bias value
-    static const byte extended_temp = 0x04; // temperature coefficient 0
+    static const uint8_t XPIXELS = 84;
+    static const uint8_t YPIXELS = 48;
+    static const uint8_t XCHARS = 14;
+    static const uint8_t YCHARS = 6;
+protected:
+    static const uint8_t XADDRS = 84;
+    static const uint8_t YADDRS = 6;
+    static const uint8_t CHARWIDTH = XPIXELS / XCHARS;
+    static const uint8_t NEWLINEBYTE = 0x0A;
+    static const uint8_t FUNC_SET = 0x20;
+    static const uint8_t FUNC_SET_POWERDOWN = 0x04;
+    static const uint8_t FUNC_SET_VERTADDR = 0x02;
+    static const uint8_t FUNC_SET_EXTENDED = 0x01;
+    static const uint8_t BASIC_DISPBLANK = 0x08;
+    static const uint8_t BASIC_DISPNORM = 0x0C;
+    static const uint8_t BASIC_DISPALLON = 0x09;
+    static const uint8_t BASIC_DISPINVERSE = 0x0D;
+    static const uint8_t BASIC_SETX = 0x80;
+    static const uint8_t BASIC_SETY = 0x40;
+    static const uint8_t EXTENDED_VOP = 0x80;
+    static const uint8_t EXTENDED_BIAS = 0x14; // sets bias value
+    static const uint8_t EXTENDED_TEMP = 0x04; // temperature coefficient 0
     static const uint32_t SPEED_4MHZ = 4000000UL; // 4 Mhz
-    static const byte default_contrast = 0x3F;
-    const static byte glyphs[][charWidth] PROGMEM;
-    const byte pinSCE;
-    const byte pinRESET;
-    const byte pinDC;
-    const byte pinMOSI;
-    const byte pinSCLK;
-    const byte pinLED;
-    const bool hardwareSPI;
+    static const uint8_t DEFAULT_CONTRAST = 0x3F;
+    const static uint8_t GLYPHS[][CHARWIDTH] PROGMEM;
+    const uint8_t PINSCE;
+    const uint8_t PINRESET;
+    const uint8_t PINDC;
+    const uint8_t PINMOSI;
+    const uint8_t PINSCLK;
+    const uint8_t PINLED;
+    const bool HARDWARESPI;
     bool enabled;
     bool backlight;
-    byte contrast;
-    byte yChar;
-    byte xChar;
-    inline void setCmdMode(bool isCommand)
-    {
-        digitalWrite(pinDC, (isCommand ? LOW : HIGH));
-    }
-    void send(byte dataOrCmd);
+    uint8_t contrast;
+    uint8_t yChar;
+    uint8_t xChar;
+    inline void setCmdMode(bool isCommand) { digitalWrite(PINDC, (isCommand ? LOW : HIGH)); }
+    void send(uint8_t dataOrCmd);
 };
 
 #endif

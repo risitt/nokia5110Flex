@@ -47,12 +47,12 @@ void loop(void)
         lcd.invert = false; // set invert to false when you no longer want inverted text
 
         lcd.write("Uptime:"); // use write() to send normal strings
-        lcd.writeNum(uptime); // you can output numbers using writeNum()
+        lcd.write(uptime); // you can output numbers, too
         lcd.writeChar('s'); // you can use writeChar() to write single characters to the LCD
 
         lcd.newLine(); // one way of going to the next line
         lcd.write_P(PSTR("Contrast:"));
-        lcd.writeNum(lcd.getContrast()); // you get get and set the LCD's contrast
+        lcd.write(lcd.getContrast()); // you get get and set the LCD's contrast
 
         // Another way of adding a newline is to use the \n escape sequence inside a string literal
         // \x__ escape sequences can also be used to specify special characters by their hex value

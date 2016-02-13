@@ -1,15 +1,15 @@
 #include "nokia5110Flex.h"
 
-nokia5110Flex::nokia5110Flex(byte pinSCE, byte pinRESET, byte pinDC, byte pinLED, byte pinMOSI, byte pinSCLK)
-    : pinSCE(pinSCE), pinRESET(pinRESET), pinDC(pinDC), pinMOSI(pinMOSI), pinSCLK(pinSCLK), pinLED(pinLED), hardwareSPI(false)
+nokia5110Flex::nokia5110Flex(uint8_t pinSCE, uint8_t pinRESET, uint8_t pinDC, uint8_t pinLED, uint8_t pinMOSI, uint8_t pinSCLK)
+    : PINSCE(pinSCE), PINRESET(pinRESET), PINDC(pinDC), PINMOSI(pinMOSI), PINSCLK(pinSCLK), PINLED(pinLED), HARDWARESPI(false)
 {
-    contrast = default_contrast;
+    contrast = DEFAULT_CONTRAST;
 }
 
-nokia5110Flex::nokia5110Flex(byte pinSCE, byte pinRESET, byte pinDC, byte pinLED)
-    : pinSCE(pinSCE), pinRESET(pinRESET), pinDC(pinDC), pinMOSI(255), pinSCLK(255), pinLED(pinLED), hardwareSPI(true)
+nokia5110Flex::nokia5110Flex(uint8_t pinSCE, uint8_t pinRESET, uint8_t pinDC, uint8_t pinLED)
+    : PINSCE(pinSCE), PINRESET(pinRESET), PINDC(pinDC), PINMOSI(255), PINSCLK(255), PINLED(pinLED), HARDWARESPI(true)
 {
-    contrast = default_contrast;
+    contrast = DEFAULT_CONTRAST;
 }
 
 nokia5110Flex::~nokia5110Flex() { }
@@ -17,12 +17,12 @@ nokia5110Flex::~nokia5110Flex() { }
 void nokia5110Flex::begin(void)
 {
     // set necessary pins as ouput
-    pinMode(pinRESET, OUTPUT);
-    pinMode(pinSCE, OUTPUT);
-    pinMode(pinLED, OUTPUT);
-    pinMode(pinDC, OUTPUT);
+    pinMode(PINRESET, OUTPUT);
+    pinMode(PINSCE, OUTPUT);
+    pinMode(PINLED, OUTPUT);
+    pinMode(PINDC, OUTPUT);
 
-    if (hardwareSPI)
+    if (HARDWARESPI)
     {
         // begin hardware SPI
         // this will set SCK, MOSI, and SS as outputs
@@ -34,37 +34,37 @@ void nokia5110Flex::begin(void)
     {
         // set MOSI and SCLK pins for output
         // for software SPI
-        pinMode(pinMOSI, OUTPUT);
-        pinMode(pinSCLK, OUTPUT);
+        pinMode(PINMOSI, OUTPUT);
+        pinMode(PINSCLK, OUTPUT);
     }
 
     // reset the LCD - this must be done early on, reset occurs on a LOW pulse
-    digitalWrite(pinRESET, LOW);
-    digitalWrite(pinRESET, HIGH);
+    digitalWrite(PINRESET, LOW);
+    digitalWrite(PINRESET, HIGH);
 
     // start with the LED backlight off
-    digitalWrite(pinLED, LOW);
+    digitalWrite(PINLED, LOW);
     backlight = false;
 
     // initialize display
     enable();
     setCmdMode(true);
-    send(extended); // sends byte 00100001 (powered up, horizontal addressing, extended instruction set)
-    send(extended_Vop | contrast); // sets contrast (V_OP)
-    send(extended_bias); // sends byte 00010100 (sets bias value)
-    send(extended_temp); // sends byte 00000100 (selects temperature coefficient 0)
-    send(basic); // sends byte 00100000 (powered up, horizontal addressing, basic instruction set)
-    send(basic_dispNorm); // sends byte 00001100 (normal display mode)
+    send(FUNC_SET | FUNC_SET_EXTENDED); // sends uint8_t 00100001 (powered up, horizontal addressing, extended instruction set)
+    send(EXTENDED_VOP | contrast); // sets contrast (V_OP)
+    send(EXTENDED_BIAS); // sends uint8_t 00010100 (sets bias value)
+    send(EXTENDED_TEMP); // sends uint8_t 00000100 (selects temperature coefficient 0)
+    send(FUNC_SET); // sends uint8_t 00100000 (powered up, horizontal addressing, basic instruction set)
+    send(BASIC_DISPNORM); // sends uint8_t 00001100 (normal display mode)
     setCmdMode(false);
 }
 
-void nokia5110Flex::send(byte dataOrCmd)
+void nokia5110Flex::send(uint8_t dataOrCmd)
 {
     if (!enabled) enable();
-    if (hardwareSPI)
+    if (HARDWARESPI)
         SPI.transfer(dataOrCmd);
     else
-        shiftOut(pinMOSI, pinSCLK, MSBFIRST, dataOrCmd);
+        shiftOut(PINMOSI, PINSCLK, MSBFIRST, dataOrCmd);
 }
 
 void nokia5110Flex::enable(void)
@@ -76,42 +76,36 @@ void nokia5110Flex::enable(void)
     // Data clock is idle when low (Clock Polarity/CPOL = 0)
     // Samples on the rising/positive edge of clock pulses (Clock Phase/CPHA = 0)
     // Use SPI_MODE0
-    if (hardwareSPI) SPI.beginTransaction(SPISettings(SPEED_4MHZ, MSBFIRST, SPI_MODE0));
-    digitalWrite(pinSCE, LOW); // enable serial interface
+    if (HARDWARESPI) SPI.beginTransaction(SPISettings(SPEED_4MHZ, MSBFIRST, SPI_MODE0));
+    digitalWrite(PINSCE, LOW); // enable serial interface
     enabled = true;
 }
 
 void nokia5110Flex::disable(void)
 {
-    digitalWrite(pinSCE, HIGH); // disable serial interface
-    if (hardwareSPI) SPI.endTransaction();
+    digitalWrite(PINSCE, HIGH); // disable serial interface
+    if (HARDWARESPI) SPI.endTransaction();
     enabled = false;
 }
 
-byte nokia5110Flex::setContrast(byte newContrast)
+uint8_t nokia5110Flex::setContrast(uint8_t newContrast)
 {
-    newContrast &= ~extended_Vop;
-    contrast = newContrast;
+    contrast = newContrast & ~EXTENDED_VOP;
     setCmdMode(true);
-    send(extended); // sends byte 00100001 (powered up, horizontal addressing, extended instruction set)
-    send(extended_Vop | contrast); // sets contrast (V_OP)
-    send(basic); // sends byte 00100000 (powered up, horizontal addressing, basic instruction set)
+    send(FUNC_SET | FUNC_SET_EXTENDED); // sends uint8_t 00100001 (powered up, horizontal addressing, extended instruction set)
+    send(EXTENDED_VOP | contrast); // sets contrast (V_OP)
+    send(FUNC_SET); // sends uint8_t 00100000 (powered up, horizontal addressing, basic instruction set)
     setCmdMode(false);
     return contrast;
 }
 
-bool nokia5110Flex::moveCursor(byte x, byte y)
+bool nokia5110Flex::moveCursor(uint8_t x, uint8_t y)
 {
-    while (x >= xChars)
-    {
-        x -= xChars;
-        y++;
-    }
-    if (y < yChars)
+    if ((x < XCHARS) && (y < YCHARS))
     {
         setCmdMode(true);
-        send(basic_setX | x * charWidth); // set column
-        send(basic_setY | y); // set row
+        send(BASIC_SETX | x * CHARWIDTH); // set column
+        send(BASIC_SETY | y); // set row
         setCmdMode(false);
         xChar = x;
         yChar = y;
@@ -120,17 +114,17 @@ bool nokia5110Flex::moveCursor(byte x, byte y)
     return false;
 }
 
-bool nokia5110Flex::writeChar(byte textByte)
+bool nokia5110Flex::writeChar(uint8_t textByte)
 {
     bool validPos;
-    if ((xChar >= xChars) || (textByte == newLineByte)) validPos = newLine();
-    else validPos = ((xChar < xChars) && (yChar < yChars));
+    if ((xChar >= XCHARS) || (textByte == NEWLINEBYTE)) validPos = newLine();
+    else validPos = ((xChar < XCHARS) && (yChar < YCHARS));
 
-    if ((textByte != newLineByte) && validPos)
+    if ((textByte != NEWLINEBYTE) && validPos)
     {
-        for (int i = 0; i < (charWidth); i++)
+        for (int i = 0; i < (CHARWIDTH); i++)
         {
-            byte glyphByte = pgm_read_byte(&(glyphs[textByte-0x01][i]));
+            uint8_t glyphByte = pgm_read_byte(&(GLYPHS[textByte-0x01][i]));
             if (invert) glyphByte = ~glyphByte;
             send(glyphByte); // set pixels
         }
@@ -142,7 +136,7 @@ bool nokia5110Flex::writeChar(byte textByte)
 
 void nokia5110Flex::write_P(const char *text)
 {
-    byte textByte;
+    uint8_t textByte;
     while ((textByte = pgm_read_byte(text++)) != 0x00)
         nokia5110Flex::writeChar(textByte);
 }
@@ -150,16 +144,16 @@ void nokia5110Flex::write_P(const char *text)
 void nokia5110Flex::write_P(const char* const* address)
 {
     char* text = (char*)pgm_read_word(address);
-    byte textByte;
+    uint8_t textByte;
     while ((textByte = pgm_read_byte(text++)) != 0x00)
         nokia5110Flex::writeChar(textByte);
 }
 
 void nokia5110Flex::write(String text)
 {
-    byte textByte;
-    byte strLength = text.length();
-    for (byte i=0; i < strLength; i++)
+    uint8_t textByte;
+    uint8_t strLength = text.length();
+    for (uint8_t i=0; i < strLength; i++)
     {
         textByte = text[i];
         nokia5110Flex::writeChar(textByte);
@@ -168,7 +162,7 @@ void nokia5110Flex::write(String text)
 
 void nokia5110Flex::write(const char *text)
 {
-    byte textByte;
+    uint8_t textByte;
     while ((textByte = (text++)[0]) != 0x00)
         nokia5110Flex::writeChar(textByte);
 }
@@ -176,6 +170,6 @@ void nokia5110Flex::write(const char *text)
 void nokia5110Flex::cls(void)
 {
     moveCursor(0,0);
-    for (word i=0; i < xAddrs * yAddrs; i++)
+    for (word i=0; i < XADDRS * YADDRS; i++)
         send(0); // clear pixels
 }
