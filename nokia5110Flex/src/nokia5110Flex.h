@@ -71,44 +71,30 @@ public:
     }
     void write(String text);
     void write(const char *text);
-    void writeLine(String text)
-    {
-        write(text);
-        padToNextLine(0x20);
-    }
-    void writeLine(const char *text)
-    {
-        write(text);
-        padToNextLine(0x20);
-    }
-    template<typename T>
-    inline void writeNum(T number)
-    {
-        write(String(number));
-    }
-    template<typename T>
-    inline void writeNumLine(T number)
-    {
-        write(String(number));
-        padToNextLine(0x20);
-    }
+    inline void write(uint8_t number) { write(String(number)); }
+    inline void write(int8_t number) { write(String(number)); }
+    inline void write(uint16_t number) { write(String(number)); }
+    inline void write(int16_t number) { write(String(number)); }
+    inline void write(uint32_t number) { write(String(number)); }
+    inline void write(int32_t number) { write(String(number)); }
+    inline void write(float number) { write(String(number)); }
+    inline void write(double number) { write(String(number)); }
+    inline void writeLine(String text) { write(text); padToNextLine(0x20); }
+    inline void writeLine(const char *text) { write(text); padToNextLine(0x20); }
+    inline void writeLine(uint8_t number) { write(String(number)); padToNextLine(0x20); }
+    inline void writeLine(int8_t number) { write(String(number)); padToNextLine(0x20); }
+    inline void writeLine(uint16_t number) { write(String(number)); padToNextLine(0x20); }
+    inline void writeLine(int16_t number) { write(String(number)); padToNextLine(0x20); }
+    inline void writeLine(uint32_t number) { write(String(number)); padToNextLine(0x20); }
+    inline void writeLine(int32_t number) { write(String(number)); padToNextLine(0x20); }
+    inline void writeLine(float number) { write(String(number)); padToNextLine(0x20); }
+    inline void writeLine(double number) { write(String(number)); padToNextLine(0x20); }
     void write_P(const char *text);
     void write_P(const char* const* text);
-    void writeLine_P(const char *text)
-    {
-        write_P(text);
-        padToNextLine(0x20);
-    }
-    void writeLine_P(const char* const* text)
-    {
-        write_P(text);
-        padToNextLine(0x20);
-    }
-    bool writeChar(byte textByte);
-    inline bool newLine(void)
-    {
-        return moveCursor(0,++yChar);
-    }
+    inline void writeLine_P(const char *text) { write_P(text); padToNextLine(0x20); }
+    inline void writeLine_P(const char* const* text) { write_P(text); padToNextLine(0x20); }
+    bool writeChar(uint8_t textByte);
+    inline bool newLine(void) { return moveCursor(0,++yChar); }
     void cls(void);
     void enableBacklight(void)
     {
