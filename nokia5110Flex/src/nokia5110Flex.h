@@ -54,7 +54,7 @@ public:
     bool moveCursor(uint8_t x, uint8_t y);
     uint8_t getCursorX(void) { return xChar; }
     uint8_t getCursorY(void) { return yChar; }
-    void padToNextLine(uint8_t textByte)
+    void padToNextLine(uint8_t textByte = 0x20)
     {
         uint8_t padLength = XCHARS - xChar;
         for (uint8_t i = 0; i < padLength; i++)
@@ -70,20 +70,20 @@ public:
     inline void write(int32_t number) { write(String(number)); }
     inline void write(float number) { write(String(number)); }
     inline void write(double number) { write(String(number)); }
-    inline void writeLine(String text) { write(text); padToNextLine(0x20); }
-    inline void writeLine(const char *text) { write(text); padToNextLine(0x20); }
-    inline void writeLine(uint8_t number) { write(String(number)); padToNextLine(0x20); }
-    inline void writeLine(int8_t number) { write(String(number)); padToNextLine(0x20); }
-    inline void writeLine(uint16_t number) { write(String(number)); padToNextLine(0x20); }
-    inline void writeLine(int16_t number) { write(String(number)); padToNextLine(0x20); }
-    inline void writeLine(uint32_t number) { write(String(number)); padToNextLine(0x20); }
-    inline void writeLine(int32_t number) { write(String(number)); padToNextLine(0x20); }
-    inline void writeLine(float number) { write(String(number)); padToNextLine(0x20); }
-    inline void writeLine(double number) { write(String(number)); padToNextLine(0x20); }
+    inline void writeLine(String text) { write(text); padToNextLine(); }
+    inline void writeLine(const char *text) { write(text); padToNextLine(); }
+    inline void writeLine(uint8_t number) { write(String(number)); padToNextLine(); }
+    inline void writeLine(int8_t number) { write(String(number)); padToNextLine(); }
+    inline void writeLine(uint16_t number) { write(String(number)); padToNextLine(); }
+    inline void writeLine(int16_t number) { write(String(number)); padToNextLine(); }
+    inline void writeLine(uint32_t number) { write(String(number)); padToNextLine(); }
+    inline void writeLine(int32_t number) { write(String(number)); padToNextLine(); }
+    inline void writeLine(float number) { write(String(number)); padToNextLine(); }
+    inline void writeLine(double number) { write(String(number)); padToNextLine(); }
     void write_P(const char *text);
     void write_P(const char* const* text);
-    inline void writeLine_P(const char *text) { write_P(text); padToNextLine(0x20); }
-    inline void writeLine_P(const char* const* text) { write_P(text); padToNextLine(0x20); }
+    inline void writeLine_P(const char *text) { write_P(text); padToNextLine(); }
+    inline void writeLine_P(const char* const* text) { write_P(text); padToNextLine(); }
     bool writeChar(uint8_t textByte);
     inline bool newLine(void) { return moveCursor(0,++yChar); }
     void cls(void);
